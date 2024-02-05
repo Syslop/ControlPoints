@@ -12,6 +12,7 @@ paths:
           content:
             application/json:
               example: { "status": "success", "data": [...] }
+  /api/accounts/add:
     post:
       summary: Создание нового счета
       requestBody:
@@ -40,6 +41,7 @@ paths:
           content:
             application/json:
               example: { "status": "success", "data": { /* информация о счете с указанным id */ } }
+  /api/accounts/update/{id}:
     post:
       summary: Обновление информации о счете
       parameters:
@@ -59,6 +61,7 @@ paths:
           content:
             application/json:
               example: { "status": "success", "data": { /* обновленная информация о счете */ } }
+  /api/accounts/delete/{id}:
     post:
       summary: Удаление счета
       parameters:
@@ -73,7 +76,7 @@ paths:
           content:
             application/json:
               example: { "status": "success", "message": "Счет успешно удален" }
-  /api/accounts/{id}/change-balance:
+  /api/accounts/change-balance/{id}:
     post:
       summary: Изменение средств на счете
       parameters:
@@ -93,7 +96,7 @@ paths:
           content:
             application/json:
               example: { "status": "success", "data": { /* обновленная информация о счете */ } }
-  /api/accounts/{id}/owners:
+  /api/accounts/addOwner/{id}/:
     post:
       summary: Добавление информации о владельце счета
       parameters:
@@ -113,8 +116,7 @@ paths:
           content:
             application/json:
               example: { "status": "success", "data": { /* обновленная информация о счете */ } }
-
-  /api/accounts/{id}/owners/{ownerId}:
+  /api/accounts/update/{id}/owners/{ownerId}:
     post:
       summary: Изменение информации о владельце счета
       parameters:
@@ -139,7 +141,7 @@ paths:
           content:
             application/json:
               example: { "status": "success", "data": { /* обновленная информация о счете */ } }
-  /api/accounts/{id}/owners/{ownerId}:
+  /api/accounts/delete/{id}/owners/{ownerId}:
     post:
       summary: Удаление владельца счета
       parameters:
@@ -159,7 +161,7 @@ paths:
           content:
             application/json:
               example: { "status": "success", "message": "Владелец счета успешно удален" }
-  /api/accounts/{id}/transactions:
+  /api/accounts/add/{id}/transactions:
     post:
       summary: Создание записи о проведении изменений средств на счете
       parameters:
