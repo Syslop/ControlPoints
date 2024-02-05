@@ -1,0 +1,199 @@
+openapi: 3.0.0
+info:
+  title: Cash Flow Manager API
+  version: 0.0.1
+paths:
+  /api/accounts:
+    get:
+      summary: Получение списка всех счетов
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              example: { "status": "success", "data": [...] }
+    post:
+      summary: Создание нового счета
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: { /* данные нового счета */ }
+      responses:
+        '200':
+          description: Успешное создание счета
+          content:
+            application/json:
+              example: { "status": "success", "data": { /* информация о созданном счете */ } }
+  /api/accounts/{id}:
+    get:
+      summary: Получение информации о конкретном счете
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              example: { "status": "success", "data": { /* информация о счете с указанным id */ } }
+    post:
+      summary: Обновление информации о счете
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: { /* обновленные данные счета */ }
+      responses:
+        '200':
+          description: Успешное обновление счета
+          content:
+            application/json:
+              example: { "status": "success", "data": { /* обновленная информация о счете */ } }
+    post:
+      summary: Удаление счета
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешное удаление счета
+          content:
+            application/json:
+              example: { "status": "success", "message": "Счет успешно удален" }
+  /api/accounts/{id}/change-balance:
+    post:
+      summary: Изменение средств на счете
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: { "amount": 100, "operationType": "debit" }
+      responses:
+        '200':
+          description: Успешное изменение средств на счете
+          content:
+            application/json:
+              example: { "status": "success", "data": { /* обновленная информация о счете */ } }
+  /api/accounts/{id}/owners:
+    post:
+      summary: Добавление информации о владельце счета
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: { /* данные о владельце счета */ }
+      responses:
+        '200':
+          description: Успешное добавление информации о владельце счета
+          content:
+            application/json:
+              example: { "status": "success", "data": { /* обновленная информация о счете */ } }
+
+  /api/accounts/{id}/owners/{ownerId}:
+    post:
+      summary: Изменение информации о владельце счета
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: ownerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: { /* обновленные данные о владельце счета */ }
+      responses:
+        '200':
+          description: Успешное изменение информации о владельце счета
+          content:
+            application/json:
+              example: { "status": "success", "data": { /* обновленная информация о счете */ } }
+  /api/accounts/{id}/owners/{ownerId}:
+    post:
+      summary: Удаление владельца счета
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: ownerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешное удаление владельца счета
+          content:
+            application/json:
+              example: { "status": "success", "message": "Владелец счета успешно удален" }
+  /api/accounts/{id}/transactions:
+    post:
+      summary: Создание записи о проведении изменений средств на счете
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: { /* данные о транзакции */ }
+      responses:
+        '200':
+          description: Успешное создание записи о транзакции
+          content:
+            application/json:
+              example: { "status": "success", "data": { /* информация о созданной транзакции */ } }
+  /api/deleted-users:
+    get:
+      summary: Получение списка всех удаленных пользователей
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              example: { "status": "success", "data": [...] }
+  /api/deleted-accounts:
+    get:
+      summary: Получение списка всех удаленных счетов
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              example: { "status": "success", "data": [...] }
