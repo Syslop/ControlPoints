@@ -3,7 +3,7 @@ info:
   title: Cash Flow Manager API
   version: 0.0.1
 paths:
-  /api/accounts:
+  /api/accounts/list/:
     get:
       summary: Получение списка всех счетов
       responses:
@@ -11,26 +11,89 @@ paths:
           description: Успешный запрос
           content:
             application/json:
-              example: { "status": "success", "data": [...] }
-  /api/accounts/add:
+              schema:
+                $ref: '#/components/schemas/AccountsListResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/accounts/add/:
     post:
       summary: Создание нового счета
       requestBody:
         required: true
         content:
           application/json:
-            example: { /* данные нового счета */ }
+            schema:
+              $ref: '#/components/schemas/AddAccountRequest'
       responses:
         '200':
           description: Успешное создание счета
           content:
             application/json:
-              example: { "status": "success", "data": { /* информация о созданном счете */ } }
-  /api/accounts/{id}:
+              schema:
+                $ref: '#/components/schemas/AddAccountResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/accounts/{accountId}/:
     get:
       summary: Получение информации о конкретном счете
       parameters:
-        - name: id
+        - name: accountId
           in: path
           required: true
           schema:
@@ -40,12 +103,43 @@ paths:
           description: Успешный запрос
           content:
             application/json:
-              example: { "status": "success", "data": { /* информация о счете с указанным id */ } }
-  /api/accounts/update/{id}:
+              schema:
+                $ref: '#/components/schemas/AccountInfoResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/accounts/update/{accountId}/:
     post:
       summary: Обновление информации о счете
       parameters:
-        - name: id
+        - name: accountId
           in: path
           required: true
           schema:
@@ -54,18 +148,50 @@ paths:
         required: true
         content:
           application/json:
-            example: { /* обновленные данные счета */ }
+            schema:
+              $ref: '#/components/schemas/UpdateAccountRequest'
       responses:
         '200':
           description: Успешное обновление счета
           content:
             application/json:
-              example: { "status": "success", "data": { /* обновленная информация о счете */ } }
-  /api/accounts/delete/{id}:
+              schema:
+                $ref: '#/components/schemas/UpdateAccountResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/accounts/delete/{accountId}/:
     post:
       summary: Удаление счета
       parameters:
-        - name: id
+        - name: accountId
           in: path
           required: true
           schema:
@@ -75,12 +201,43 @@ paths:
           description: Успешное удаление счета
           content:
             application/json:
-              example: { "status": "success", "message": "Счет успешно удален" }
-  /api/accounts/change-balance/{id}:
+              schema:
+                $ref: '#/components/schemas/DeleteAccountResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/accounts/change-balance/{accountId}/:
     post:
       summary: Изменение средств на счете
       parameters:
-        - name: id
+        - name: accountId
           in: path
           required: true
           schema:
@@ -89,18 +246,50 @@ paths:
         required: true
         content:
           application/json:
-            example: { "amount": 100, "operationType": "debit" }
+            schema:
+              $ref: '#/components/schemas/ChangeBalanceRequest'
       responses:
         '200':
           description: Успешное изменение средств на счете
           content:
             application/json:
-              example: { "status": "success", "data": { /* обновленная информация о счете */ } }
-  /api/accounts/addOwner/{id}/:
+              schema:
+                $ref: '#/components/schemas/ChangeBalanceResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/accounts/addOwner/{accountId}/:
     post:
       summary: Добавление информации о владельце счета
       parameters:
-        - name: id
+        - name: accountId
           in: path
           required: true
           schema:
@@ -109,23 +298,50 @@ paths:
         required: true
         content:
           application/json:
-            example: { /* данные о владельце счета */ }
+            schema:
+              $ref: '#/components/schemas/AddOwnerRequest'
       responses:
         '200':
           description: Успешное добавление информации о владельце счета
           content:
             application/json:
-              example: { "status": "success", "data": { /* обновленная информация о счете */ } }
-  /api/accounts/update/{id}/owners/{ownerId}:
+              schema:
+                $ref: '#/components/schemas/AddOwnerResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/accounts/updateOwner/{accountId}/:
     post:
       summary: Изменение информации о владельце счета
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: ownerId
+        - name: accountId
           in: path
           required: true
           schema:
@@ -134,23 +350,50 @@ paths:
         required: true
         content:
           application/json:
-            example: { /* обновленные данные о владельце счета */ }
+            schema:
+              $ref: '#/components/schemas/UpdateOwnerRequest'
       responses:
         '200':
           description: Успешное изменение информации о владельце счета
           content:
             application/json:
-              example: { "status": "success", "data": { /* обновленная информация о счете */ } }
-  /api/accounts/delete/{id}/owners/{ownerId}:
+              schema:
+                $ref: '#/components/schemas/UpdateOwnerResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/accounts/deleteOwner/{accountId}/:
     post:
       summary: Удаление владельца счета
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: ownerId
+        - name: accountId
           in: path
           required: true
           schema:
@@ -160,12 +403,43 @@ paths:
           description: Успешное удаление владельца счета
           content:
             application/json:
-              example: { "status": "success", "message": "Владелец счета успешно удален" }
-  /api/accounts/add/{id}/transactions:
+              schema:
+                $ref: '#/components/schemas/DeleteOwnerResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/transactions/add/{accountId}/:
     post:
       summary: Создание записи о проведении изменений средств на счете
       parameters:
-        - name: id
+        - name: accountId
           in: path
           required: true
           schema:
@@ -174,14 +448,46 @@ paths:
         required: true
         content:
           application/json:
-            example: { /* данные о транзакции */ }
+            schema:
+              $ref: '#/components/schemas/AddTransactionRequest'
       responses:
         '200':
           description: Успешное создание записи о транзакции
           content:
             application/json:
-              example: { "status": "success", "data": { /* информация о созданной транзакции */ } }
-  /api/deleted-users:
+              schema:
+                $ref: '#/components/schemas/AddTransactionResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/deleted-users/list/:
     get:
       summary: Получение списка всех удаленных пользователей
       responses:
@@ -189,8 +495,39 @@ paths:
           description: Успешный запрос
           content:
             application/json:
-              example: { "status": "success", "data": [...] }
-  /api/deleted-accounts:
+              schema:
+                $ref: '#/components/schemas/DeletedUsersListResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/deleted-accounts/list/:
     get:
       summary: Получение списка всех удаленных счетов
       responses:
@@ -198,4 +535,248 @@ paths:
           description: Успешный запрос
           content:
             application/json:
-              example: { "status": "success", "data": [...] }
+              schema:
+                $ref: '#/components/schemas/DeletedAccountsListResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      description: Ошибка от приложения
+      type: object
+      required:
+        - status
+        - error
+        - message
+        - exception
+        - path
+        - timestamp
+      properties:
+        status:
+          description: Статус ошибки
+          type: string
+          example: "500"
+          pattern: "^[45]0[0-9]{1}$"  # Ошибка сервера (5xx) или клиента (4xx)
+          maxLength: 3  # Максимальная длина строки
+        error:
+          description: Описание ошибки
+          type: string
+          example: "Internal Server Error"
+          pattern: "^[\u0410-\u044F0-9\s]+$"  # Русские буквы, цифры и пробелы
+        message:
+          description: Сообщение об ошибке
+          type: string
+          example: "Произошла ошибка при обработке запроса"
+        exception:
+          description: Имя исключения
+          type: string
+          example: "NullPointerException"
+          pattern: "^[A-Za-z0-9]+$"  # Буквы латинского алфавита и цифры
+        path:
+          description: Путь запроса, вызвавшего ошибку
+          type: string
+          example: "/api/v1/users/123"
+          pattern: "^\/[a-z0-9\/]+$"  # Путь запроса должен начинаться с / и содержать только строчные буквы и цифры
+        timestamp:
+          description: Временная метка ошибки
+          type: string
+          format: date-time  # Формат даты-времени
+          example: "2024-02-06T12:30:45Z"
+      additionalProperties: false
+    AccountsListResponse:
+      type: object
+      properties:
+      # Properties of the response schema
+      # Additional properties as needed
+    AddAccountRequest:
+      type: object
+      properties:
+        name:
+          description: Имя счета
+          type: string
+        balance:
+          description: Начальный баланс счета
+          type: number
+      # Additional properties as needed
+    AddAccountResponse:
+      type: object
+      properties:
+        accountId:
+          description: Идентификатор только что созданного счета
+          type: integer
+      # Properties of the account creation response schema
+      # Additional properties as needed
+    AccountInfoResponse:
+      type: object
+      properties:
+      # Properties of the account info response schema
+      # Additional properties as needed
+    UpdateAccountRequest:
+      type: object
+      properties:
+        name:
+          description: Новое имя счета (если требуется изменение)
+          type: string
+        balance:
+          description: Новый баланс счета (если требуется изменение)
+          type: number
+      # Properties of the update account request schema
+      # Additional properties as needed
+    UpdateAccountResponse:
+      type: object
+      properties:
+        updatedFields:
+          description: Обновленные поля счета, если они были изменены в запросе
+          type: object
+      # Properties of the account update response schema
+      # Additional properties as needed
+    DeleteAccountResponse:
+      type: object
+      properties:
+      # Properties of the delete account response schema
+      # Additional properties as needed
+    ChangeBalanceRequest:
+      type: object
+      properties:
+        amount:
+          description: Сумма изменения баланса (может быть положительной или отрицательной)
+          type: number
+      # Properties of the change balance request schema
+      # Additional properties as needed
+    ChangeBalanceResponse:
+      type: object
+      properties:
+      # Properties of the account balance change response schema
+      # Additional properties as needed
+    AddOwnerRequest:
+      type: object
+      properties:
+        ownerName:
+          description: Имя владельца счета
+          type: string
+        ownerEmail:
+          description: Email владельца счета
+          type: string
+      # Properties of the add owner request schema
+      # Additional properties as needed
+    AddOwnerResponse:
+      type: object
+      properties:
+        ownerId:
+          description: Идентификатор только что добавленного владельца счета
+          type: integer
+      # Properties of the owner info response schema
+      # Additional properties as needed
+    UpdateOwnerRequest:
+      type: object
+      properties:
+        ownerName:
+          description: Новое имя владельца счета (если требуется изменение)
+          type: string
+        ownerEmail:
+          description: Новый email владельца счета (если требуется изменение)
+          type: string
+      # Properties of the update owner request schema
+      # Additional properties as needed
+    UpdateOwnerResponse:
+      type: object
+      properties:
+        updatedFields:
+          description: Обновленные поля владельца счета, если они были изменены в запросе
+          type: object
+      # Properties of the owner update response schema
+      # Additional properties as needed
+    DeleteOwnerResponse:
+      type: object
+      properties:
+      # Properties of the delete owner response schema
+      # Additional properties as needed
+    AddTransactionRequest:
+      type: object
+      properties:
+        type:
+          description: Тип транзакции (например, "deposit" или "withdrawal")
+          type: string
+        amount:
+          description: Сумма транзакции
+          type: number
+      # Properties of the transaction request schema
+      # Additional properties as needed
+    AddTransactionResponse:
+      type: object
+      properties:
+        transactionId:
+          description: Идентификатор только что созданной транзакции
+          type: integer
+      # Properties of the transaction response schema
+      # Additional properties as needed
+    DeletedUsersListResponse:
+      type: object
+      properties:
+      # Properties of the deleted users response schema
+      # Additional properties as needed
+    DeletedAccountsListResponse:
+      type: object
+      properties:
+      # Properties of the deleted accounts response schema
+      # Additional properties as needed
+
+
+    ListResponse:
+      description: 123
+      type: object
+      properties:
+        'list':
+          description: 123
+          type: array
+          items:
+            $ref: 123
+          maxItems: 123
+      additionalProperties: false
+    Response:
+      description: 13
+      required:
+        - name
+        - ads
+        - asd
+      type: object
+      properties:
+        name:
+          description: 123
+          type: string
+          format: uuid
+        created:
+          format: int64
+          description: 123
+          type: integer
+          example: 123
+
+
