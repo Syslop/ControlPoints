@@ -1,68 +1,91 @@
---liquibase formatted sql logicalFilePath:path-independent runOnChange:true splitStatements:true endDelimiter:"/"
+--liquibase formatted sql logicalFilePath:path-independent runOnChange:true splitStatements:true endDelimiter:/
+
 --changeset syslop:1
-CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.ACCOUNTS (
-    id SERIAL PRIMARY KEY,
-    account_number VARCHAR(20) NOT NULL,
-    balance DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.OWNER_PERSONAL_DATA (
+    id VARCHAR(64) PRIMARY KEY,
+    owner_surname VARCHAR(100) NOT NULL,
+    owner_name VARCHAR(100) NOT NULL,
+    owner_patronymic VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    email VARCHAR(100),
+    phone_number VARCHAR(20),
+    address VARCHAR(255),
+    date_of_birth DATE,
+    gender VARCHAR(10),
+    CONSTRAINT OWNER_PERSONAL_DATA_pk primary key (id)
     );
-comment on table ${cashFlowManager.schema}.ACCOUNTS is 'Таблица для хранения информации о счетах';
-comment on column ${cashFlowManager.schema}.ACCOUNTS.id is 'Идентификатор счета';
-comment on column ${cashFlowManager.schema}.ACCOUNTS.account_number is 'Номер счета';
-comment on column ${cashFlowManager.schema}.ACCOUNTS.balance is 'Баланс счета';
-comment on column ${cashFlowManager.schema}.ACCOUNTS.created_at is 'Дата создания счета';
+comment on table ${cashFlowManager.schema}.OWNER_PERSONAL_DATA is 'Таблица для хранения персональных данных владельцев счетов';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.id is 'Идентификатор персональных данных владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.owner_surname is 'Фамилия владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.owner_name is 'Имя владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.owner_patronymic is 'Отчество владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.created_at is 'Дата регистрации персональных данных владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.email is 'Email владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.phone_number is 'Номер телефона владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.address is 'Адрес владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.date_of_birth is 'Дата рождения владельца счета';
+comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.gender is 'Пол владельца счета';
 /
 
 --changeset syslop:2
 CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.ACCOUNT_OWNERS (
-    id SERIAL PRIMARY KEY,
-    account_id INTEGER REFERENCES accounts(id) ON DELETE CASCADE,
-    owner_name VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id VARCHAR(64) PRIMARY KEY,
+    owner_personal_data_id INTEGER,
+    status VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ownership_percentage INTEGER,
+    CONSTRAINT ACCOUNT_OWNERS_pk primary key (id),
+    CONSTRAINT ACCOUNT_OWNERS_owner_personal_data_id_FK FOREIGN KEY (owner_personal_data_id) REFERENCES ${cashFlowManager.schema}.OWNER_PERSONAL_DATA (id) ON DELETE CASCADE
     );
 comment on table ${cashFlowManager.schema}.ACCOUNT_OWNERS is 'Таблица для хранения информации о владельцах счетов';
 comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.id is 'Идентификатор владельца счета';
-comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.account_id is 'Идентификатор счета';
-comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.owner_name is 'Имя владельца счета';
+comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.owner_personal_data_id is 'Идентификатор персональных данных о владельце счета';
+comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.status is 'Статус владельца счета';
 comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.created_at is 'Дата регистрации владельца счета';
+comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.ownership_percentage is 'Процент доли владения счетом';
 /
 
 --changeset syslop:3
-CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.TRANSACTIONS (
-    id SERIAL PRIMARY KEY,
-    account_id INTEGER REFERENCES accounts(id) ON DELETE CASCADE,
-    amount DECIMAL(10, 2) NOT NULL,
-    operation_type VARCHAR(10) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.ACCOUNTS (
+    id VARCHAR(64) PRIMARY KEY,
+    account_number VARCHAR(20) NOT NULL,
+    account_owner_id INTEGER,
+    balance INTEGER NOT NULL,
+    currency VARCHAR(36) NOT NULL,
+    status VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT ACCOUNTS_pk primary key (id),
+    CONSTRAINT ACCOUNTS_account_owner_id_FK FOREIGN KEY (account_owner_id) REFERENCES ${cashFlowManager.schema}.ACCOUNT_OWNERS (id) ON DELETE CASCADE
     );
-comment on table ${cashFlowManager.schema}.TRANSACTIONS is 'Таблица для хранения информации о транзакциях';
-comment on column ${cashFlowManager.schema}.TRANSACTIONS.id is 'Идентификатор транзакции';
-comment on column ${cashFlowManager.schema}.TRANSACTIONS.account_id is 'Идентификатор счета';
-comment on column ${cashFlowManager.schema}.TRANSACTIONS.amount is 'Количество средств во время транзакции';
-comment on column ${cashFlowManager.schema}.TRANSACTIONS.operation_type is 'Тип транзакции';
-comment on column ${cashFlowManager.schema}.TRANSACTIONS.created_at is 'Дата проведения транзакции';
+comment on table ${cashFlowManager.schema}.ACCOUNTS is 'Таблица для хранения информации о счетах';
+comment on column ${cashFlowManager.schema}.ACCOUNTS.id is 'Идентификатор счета';
+comment on column ${cashFlowManager.schema}.ACCOUNTS.account_number is 'Номер счета';
+comment on column ${cashFlowManager.schema}.ACCOUNTS.account_owner_id is 'Идентификатор владельца счета';
+comment on column ${cashFlowManager.schema}.ACCOUNTS.balance is 'Баланс счета';
+comment on column ${cashFlowManager.schema}.ACCOUNTS.currency is 'Валюта счета';
+comment on column ${cashFlowManager.schema}.ACCOUNTS.status is 'Статус счета';
+comment on column ${cashFlowManager.schema}.ACCOUNTS.created_at is 'Дата создания счета';
 /
 
 --changeset syslop:4
-CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.DELETED_USERS (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(100) NOT NULL,
-    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.TRANSACTIONS (
+    id VARCHAR(64) PRIMARY KEY,
+    account_id INTEGER REFERENCES ${cashFlowManager.schema}.ACCOUNTS(id) ON DELETE CASCADE,
+    amount INTEGER NOT NULL,
+    currency VARCHAR(36) NOT NULL,
+    operation_type VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    transaction_type VARCHAR(50),
+    transaction_description TEXT,
+    CONSTRAINT TRANSACTIONS_pk primary key (id),
+    CONSTRAINT TRANSACTIONS_account_id_FK FOREIGN KEY (account_id) REFERENCES ${cashFlowManager.schema}.ACCOUNTS (id) ON DELETE CASCADE
     );
-comment on table ${cashFlowManager.schema}.DELETED_USERS is 'Таблица для хранения удаленных пользователей';
-comment on column ${cashFlowManager.schema}.DELETED_USERS.id is 'Идентификатор удаленного владельца счета';
-comment on column ${cashFlowManager.schema}.DELETED_USERS.username is 'Имя удаленного владельца счета';
-comment on column ${cashFlowManager.schema}.DELETED_USERS.deleted_at is 'Дата удаления владельца счета';
-/
-
---changeset syslop:5
-CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.DELETED_ACCOUNTS (
-    id SERIAL PRIMARY KEY,
-    account_number VARCHAR(20) NOT NULL,
-    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-comment on table ${cashFlowManager.schema}.DELETED_ACCOUNTS is 'Таблица для хранения удаленных счетов';
-comment on column ${cashFlowManager.schema}.DELETED_ACCOUNTS.id is 'Идентификатор удаленного счета';
-comment on column ${cashFlowManager.schema}.DELETED_ACCOUNTS.account_number is 'Номер удаленного счета';
-comment on column ${cashFlowManager.schema}.DELETED_ACCOUNTS.deleted_at is 'Дата удаления счета';
+comment on table ${cashFlowManager.schema}.TRANSACTIONS is 'Таблица для хранения информации об операциях на счете';
+comment on column ${cashFlowManager.schema}.TRANSACTIONS.id is 'Идентификатор операции на счете';
+comment on column ${cashFlowManager.schema}.TRANSACTIONS.account_id is 'Идентификатор счета';
+comment on column ${cashFlowManager.schema}.TRANSACTIONS.amount is 'Количество средств во время операции';
+comment on column ${cashFlowManager.schema}.TRANSACTIONS.amount is 'Валюта операции';
+comment on column ${cashFlowManager.schema}.TRANSACTIONS.operation_type is 'Тип операции';
+comment on column ${cashFlowManager.schema}.TRANSACTIONS.created_at is 'Дата проведения операции';
+comment on column ${cashFlowManager.schema}.TRANSACTIONS.transaction_description is 'Описание транзакции или комментарий';
 /
