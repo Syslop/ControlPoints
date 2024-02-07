@@ -435,58 +435,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/transactions/add/{accountId}/:
-    post:
-      summary: Создание записи о проведении изменений средств на счете
-      parameters:
-        - name: accountId
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddTransactionRequest'
-      responses:
-        '200':
-          description: Успешное создание записи о транзакции
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddTransactionResponse'
-        '400':
-          description: Некорректный запрос от клиента
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Неавторизованный запрос
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '403':
-          description: Доступ запрещен
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Запрашиваемый ресурс не найден
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
   /api/deleted-users/list/:
     get:
       summary: Получение списка всех удаленных пользователей
@@ -590,7 +538,6 @@ components:
           description: Описание ошибки
           type: string
           example: "Internal Server Error"
-          pattern: "^[\u0410-\u044F0-9\s]+$"  # Русские буквы, цифры и пробелы
         message:
           description: Сообщение об ошибке
           type: string
@@ -599,184 +546,305 @@ components:
           description: Имя исключения
           type: string
           example: "NullPointerException"
-          pattern: "^[A-Za-z0-9]+$"  # Буквы латинского алфавита и цифры
         path:
           description: Путь запроса, вызвавшего ошибку
           type: string
           example: "/api/v1/users/123"
-          pattern: "^\/[a-z0-9\/]+$"  # Путь запроса должен начинаться с / и содержать только строчные буквы и цифры
         timestamp:
           description: Временная метка ошибки
           type: string
           format: date-time  # Формат даты-времени
           example: "2024-02-06T12:30:45Z"
       additionalProperties: false
-    AccountsListResponse:
-      type: object
+    OwnerPersonalDataItem:
+      description: "Элемент, представляющий персональные данные владельца"
+      type: "object"
+      required:
+        - id
+        - ownerSurname
+        - ownerName
+        - createdAt
+        - email
+        - phoneNumber
+        - address
+        - dateOfBirth
+        - gender
       properties:
-      # Properties of the response schema
-      # Additional properties as needed
-    AddAccountRequest:
-      type: object
+        id:
+          description: "Идентификатор персональных данных владельца"
+          type: "string"
+          format: uuid
+        ownerSurname:
+          description: "Фамилия владельца"
+          type: "string"
+        ownerName:
+          description: "Имя владельца"
+          type: "string"
+        ownerPatronymic:
+          description: "Отчество владельца"
+          type: "string"
+        createdAt:
+          description: "Дата создания персональных данных"
+          type: "string"
+          format: "date-time"
+        email:
+          description: "Email владельца"
+          type: "string"
+        phoneNumber:
+          description: "Номер телефона владельца"
+          type: "string"
+        address:
+          description: "Адрес владельца"
+          type: "string"
+        dateOfBirth:
+          description: "Дата рождения владельца"
+          type: "string"
+          format: "date"
+        gender:
+          description: "Пол владельца"
+          type: "string"
+      additionalProperties: false
+    AccountOwnerItem:
+      description: "Элемент данных о владельцах счетов"
+      type: "object"
+      required:
+        - id
+        - ownerPersonalDataId
+        - status
+        - createdAt
+        - ownershipPercentage
       properties:
-        name:
-          description: Имя счета
-          type: string
+        id:
+          description: "Идентификатор владельца счета"
+          type: "string"
+          format: uuid
+        ownerPersonalDataId:
+          description: "Идентификатор персональных данных владельца счета"
+          type: "integer"
+        status:
+          description: "Статус владельца счета"
+          type: "string"
+        createdAt:
+          description: "Дата создания записи о владельце счета"
+          type: "string"
+          format: "date-time"
+        ownershipPercentage:
+          description: "Процент доли владения счетом"
+          type: "integer"
+      additionalProperties: false
+    AccountItem:
+      description: "Элемент данных о счете"
+      type: "object"
+      required:
+        - id
+        - accountNumber
+        - accountOwnerId
+        - balance
+        - currency
+        - status
+        - createdAt
+      properties:
+        id:
+          description: "Идентификатор счета"
+          type: "string"
+          format: uuid
+        accountNumber:
+          description: "Номер счета"
+          type: "string"
+        accountOwnerId:
+          description: "Идентификатор владельца счета"
+          type: "integer"
         balance:
-          description: Начальный баланс счета
-          type: number
-      # Additional properties as needed
+          description: "Баланс счета"
+          type: "integer"
+        currency:
+          description: "Валюта счета"
+          type: "string"
+        status:
+          description: "Статус счета"
+          type: "string"
+        createdAt:
+          description: "Дата создания счета"
+          type: "string"
+          format: "date-time"
+      additionalProperties: false
+    TransactionItem:
+      description: "Элемент данных о транзакции"
+      type: "object"
+      required:
+        - id
+        - accountId
+        - amount
+        - currency
+        - operationType
+        - createdAt
+      properties:
+        id:
+          description: "Идентификатор транзакции"
+          type: "string"
+          format: uuid
+        accountId:
+          description: "Идентификатор счета"
+          type: "integer"
+        amount:
+          description: "Количество средств во время операции"
+          type: "integer"
+        currency:
+          description: "Валюта операции"
+          type: "string"
+        operationType:
+          description: "Тип операции"
+          type: "string"
+        createdAt:
+          description: "Дата проведения операции"
+          type: "string"
+          format: "date-time"
+        transactionType:
+          description: "Тип транзакции"
+          type: "string"
+        transactionDescription:
+          description: "Описание транзакции или комментарий"
+          type: "string"
+      additionalProperties: false
+    AccountsListResponse:
+      description: "Ответ со списком всех счетов"
+      type: "object"
+      required:
+        - accountsList
+      properties:
+        'accountsList':
+          description: "Список всех счетов"
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountItem'
+      additionalProperties: false
+    AddAccountRequest:
+      description: "Запрос на добавление счета"
+      required:
+        - account
+      type: "object"
+      properties:
+        'account':
+          $ref: '#/components/schemas/AccountItem'
     AddAccountResponse:
-      type: object
+      description: "Ответ на добавление счета"
+      type: "object"
+      required:
+        - accountId
       properties:
         accountId:
           description: Идентификатор только что созданного счета
-          type: integer
-      # Properties of the account creation response schema
-      # Additional properties as needed
+          type: "string"
     AccountInfoResponse:
-      type: object
+      description: "Ответ на получение информации о счете"
+      type: "object"
+      required:
+        - account
       properties:
-      # Properties of the account info response schema
-      # Additional properties as needed
+        'account':
+          $ref: '#/components/schemas/AccountItem'
     UpdateAccountRequest:
-      type: object
+      description: "Запрос на изменение информации о счете"
+      type: "object"
+      required:
+        - account
       properties:
-        name:
-          description: Новое имя счета (если требуется изменение)
-          type: string
-        balance:
-          description: Новый баланс счета (если требуется изменение)
-          type: number
-      # Properties of the update account request schema
-      # Additional properties as needed
+        'account':
+          $ref: '#/components/schemas/AccountItem'
     UpdateAccountResponse:
-      type: object
+      description: "Ответ на изменение информации о счете"
+      type: "object"
+      required:
+        - account
       properties:
-        updatedFields:
-          description: Обновленные поля счета, если они были изменены в запросе
-          type: object
-      # Properties of the account update response schema
-      # Additional properties as needed
+        'account':
+          $ref: '#/components/schemas/AccountItem'
     DeleteAccountResponse:
-      type: object
+      description: "Ответ на удаление счета"
+      type: "object"
+      required:
+        - accountId
       properties:
-      # Properties of the delete account response schema
-      # Additional properties as needed
+        accountId:
+          description: Идентификатор только что удаленного счета
+          type: "string"
     ChangeBalanceRequest:
-      type: object
+      description: "Запрос на проведение операции со счетом"
+      type: "object"
+      required:
+        - transaction
       properties:
-        amount:
-          description: Сумма изменения баланса (может быть положительной или отрицательной)
-          type: number
-      # Properties of the change balance request schema
-      # Additional properties as needed
+        'transaction':
+          $ref: '#/components/schemas/TransactionItem'
     ChangeBalanceResponse:
-      type: object
-      properties:
-      # Properties of the account balance change response schema
-      # Additional properties as needed
-    AddOwnerRequest:
-      type: object
-      properties:
-        ownerName:
-          description: Имя владельца счета
-          type: string
-        ownerEmail:
-          description: Email владельца счета
-          type: string
-      # Properties of the add owner request schema
-      # Additional properties as needed
-    AddOwnerResponse:
-      type: object
-      properties:
-        ownerId:
-          description: Идентификатор только что добавленного владельца счета
-          type: integer
-      # Properties of the owner info response schema
-      # Additional properties as needed
-    UpdateOwnerRequest:
-      type: object
-      properties:
-        ownerName:
-          description: Новое имя владельца счета (если требуется изменение)
-          type: string
-        ownerEmail:
-          description: Новый email владельца счета (если требуется изменение)
-          type: string
-      # Properties of the update owner request schema
-      # Additional properties as needed
-    UpdateOwnerResponse:
-      type: object
-      properties:
-        updatedFields:
-          description: Обновленные поля владельца счета, если они были изменены в запросе
-          type: object
-      # Properties of the owner update response schema
-      # Additional properties as needed
-    DeleteOwnerResponse:
-      type: object
-      properties:
-      # Properties of the delete owner response schema
-      # Additional properties as needed
-    AddTransactionRequest:
-      type: object
-      properties:
-        type:
-          description: Тип транзакции (например, "deposit" или "withdrawal")
-          type: string
-        amount:
-          description: Сумма транзакции
-          type: number
-      # Properties of the transaction request schema
-      # Additional properties as needed
-    AddTransactionResponse:
-      type: object
+      description: "Ответ на проведение операции со счетом"
+      type: "object"
+      required:
+        - transactionId
       properties:
         transactionId:
-          description: Идентификатор только что созданной транзакции
-          type: integer
-      # Properties of the transaction response schema
-      # Additional properties as needed
+          description: Идентификатор только что проведенной транзакции
+          type: "string"
+    AddOwnerRequest:
+      description: "Запрос на добавление клиента"
+      type: "object"
+      required:
+        - owner
+      properties:
+        'owner':
+          $ref: '#/components/schemas/OwnerPersonalDataItem'
+    AddOwnerResponse:
+      description: "Ответ на добавление клиента"
+      type: "object"
+      required:
+        - transactionId
+      properties:
+        transactionId:
+          description: Идентификатор только что добавленного клиента
+          type: "string"
+    UpdateOwnerRequest:
+      description: "Запрос на изменения информации о клиенте"
+      type: "object"
+      required:
+        - owner
+      properties:
+        'owner':
+          $ref: '#/components/schemas/OwnerPersonalDataItem'
+    UpdateOwnerResponse:
+      description: "Ответ на изменения информации о клиенте"
+      type: "object"
+      required:
+        - owner
+      properties:
+        'owner':
+          $ref: '#/components/schemas/OwnerPersonalDataItem'
+    DeleteOwnerResponse:
+      description: "Запрос на удаление владельца счета"
+      type: "object"
+      required:
+        - accountOwnerItem
+      properties:
+        'accountOwnerItem':
+          $ref: '#/components/schemas/AccountOwnerItem'
     DeletedUsersListResponse:
-      type: object
+      description: "Ответ со списком всех удаленных клиентов"
+      type: "object"
+      required:
+        - deletedOwnersList
       properties:
-      # Properties of the deleted users response schema
-      # Additional properties as needed
-    DeletedAccountsListResponse:
-      type: object
-      properties:
-      # Properties of the deleted accounts response schema
-      # Additional properties as needed
-
-
-    ListResponse:
-      description: 123
-      type: object
-      properties:
-        'list':
-          description: 123
+        'deletedOwnersList':
+          description: "Список всех удаленных клиентов"
           type: array
           items:
-            $ref: 123
-          maxItems: 123
-      additionalProperties: false
-    Response:
-      description: 13
+            $ref: '#/components/schemas/OwnerPersonalDataItem'
+    DeletedAccountsListResponse:
+      description: "Ответ со списком всех удаленных счетов"
+      type: "object"
       required:
-        - name
-        - ads
-        - asd
-      type: object
+        - deletedAccountsList
       properties:
-        name:
-          description: 123
-          type: string
-          format: uuid
-        created:
-          format: int64
-          description: 123
-          type: integer
-          example: 123
-
-
+        'deletedAccountsList':
+          description: "Список всех удаленных счетов"
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountItem'
