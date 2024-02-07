@@ -3,7 +3,7 @@ info:
   title: Cash Flow Manager API
   version: 0.0.1
 paths:
-  /api/accounts/list/:
+  /account/list/:
     get:
       summary: Получение списка всех счетов
       responses:
@@ -43,7 +43,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/accounts/add/:
+  /account/add/:
     post:
       summary: Создание нового счета
       requestBody:
@@ -89,7 +89,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/accounts/{accountId}/:
+  /account/{accountId}/:
     get:
       summary: Получение информации о конкретном счете
       parameters:
@@ -135,7 +135,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/accounts/update/{accountId}/:
+  /account/update/{accountId}/:
     post:
       summary: Обновление информации о счете
       parameters:
@@ -187,7 +187,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/accounts/delete/{accountId}/:
+  /account/delete/{accountId}/:
     post:
       summary: Удаление счета
       parameters:
@@ -233,7 +233,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/accounts/change-balance/{accountId}/:
+  /balance/update/{accountId}/:
     post:
       summary: Изменение средств на счете
       parameters:
@@ -285,7 +285,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/accounts/addOwner/{accountId}/:
+  /owner/add/{accountId}/:
     post:
       summary: Добавление информации о владельце счета
       parameters:
@@ -337,7 +337,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/accounts/updateOwner/{accountId}/:
+  /owner/update/{accountId}/:
     post:
       summary: Изменение информации о владельце счета
       parameters:
@@ -389,7 +389,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/accounts/deleteOwner/{accountId}/:
+  /owner/delete/{accountId}/:
     post:
       summary: Удаление владельца счета
       parameters:
@@ -435,7 +435,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/deleted-users/list/:
+  /owner/deleted/list/:
     get:
       summary: Получение списка всех удаленных пользователей
       responses:
@@ -475,7 +475,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/deleted-accounts/list/:
+  /account/deleted/list/:
     get:
       summary: Получение списка всех удаленных счетов
       responses:
