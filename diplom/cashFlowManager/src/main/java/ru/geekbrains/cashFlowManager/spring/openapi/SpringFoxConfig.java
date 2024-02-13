@@ -5,7 +5,6 @@ import org.openapitools.model.ErrorResponse;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import springfox.documentation.RequestHandlerKey;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -42,7 +41,6 @@ public class SpringFoxConfig {
                 .title("API для Cash Flow Manager")
                 .description("Описание всех API-методов и классов для приложения Cash Flow Manager")
                 .version("0.0.1")
-                .build()
-        )
+                .build();
     }
 }
