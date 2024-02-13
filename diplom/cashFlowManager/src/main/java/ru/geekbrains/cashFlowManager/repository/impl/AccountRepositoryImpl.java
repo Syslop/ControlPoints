@@ -35,9 +35,9 @@ public class AccountRepositoryImpl implements AccountRepository {
             ps.setObject(1, accountDTO.getId());
             ps.setString(2, accountDTO.getAccountNumber());
             ps.setObject(3, accountDTO.getAccountOwnerId());
-            ps.setInt(2, accountDTO.getBalance());
-            ps.setString(2, accountDTO.getCurrency());
-            ps.setString(2, accountDTO.getStatus());
+            ps.setInt(4, accountDTO.getBalance());
+            ps.setString(5, accountDTO.getCurrency());
+            ps.setString(6, accountDTO.getStatus());
             return ps;
         });
         return accountDTO.getId();
