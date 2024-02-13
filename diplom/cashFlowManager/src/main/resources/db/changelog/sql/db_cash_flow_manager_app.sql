@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.OWNER_PERSONAL_DATA (
     owner_surname VARCHAR(100) NOT NULL,
     owner_name VARCHAR(100) NOT NULL,
     owner_patronymic VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(100),
     phone_number VARCHAR(20),
     address VARCHAR(255),
@@ -19,7 +18,6 @@ comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.id is 'Иден�
 comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.owner_surname is 'Фамилия владельца счета';
 comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.owner_name is 'Имя владельца счета';
 comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.owner_patronymic is 'Отчество владельца счета';
-comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.created_at is 'Дата регистрации персональных данных владельца счета';
 comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.email is 'Email владельца счета';
 comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.phone_number is 'Номер телефона владельца счета';
 comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.address is 'Адрес владельца счета';
@@ -33,7 +31,6 @@ CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.ACCOUNT_OWNERS (
     owner_personal_data_id INTEGER,
     status VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ownership_percentage INTEGER,
     CONSTRAINT ACCOUNT_OWNERS_pk primary key (id),
     CONSTRAINT ACCOUNT_OWNERS_owner_personal_data_id_FK FOREIGN KEY (owner_personal_data_id) REFERENCES ${cashFlowManager.schema}.OWNER_PERSONAL_DATA (id) ON DELETE CASCADE
     );
@@ -42,7 +39,6 @@ comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.id is 'Идентиф
 comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.owner_personal_data_id is 'Идентификатор персональных данных о владельце счета';
 comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.status is 'Статус владельца счета';
 comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.created_at is 'Дата регистрации владельца счета';
-comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.ownership_percentage is 'Процент доли владения счетом';
 /
 
 --changeset syslop:3
@@ -75,7 +71,6 @@ CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.TRANSACTIONS (
     currency VARCHAR(36) NOT NULL,
     operation_type VARCHAR(10) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    transaction_type VARCHAR(50),
     transaction_description TEXT,
     CONSTRAINT TRANSACTIONS_pk primary key (id),
     CONSTRAINT TRANSACTIONS_account_id_FK FOREIGN KEY (account_id) REFERENCES ${cashFlowManager.schema}.ACCOUNTS (id) ON DELETE CASCADE
@@ -84,7 +79,7 @@ comment on table ${cashFlowManager.schema}.TRANSACTIONS is 'Таблица дл�
 comment on column ${cashFlowManager.schema}.TRANSACTIONS.id is 'Идентификатор операции на счете';
 comment on column ${cashFlowManager.schema}.TRANSACTIONS.account_id is 'Идентификатор счета';
 comment on column ${cashFlowManager.schema}.TRANSACTIONS.amount is 'Количество средств во время операции';
-comment on column ${cashFlowManager.schema}.TRANSACTIONS.amount is 'Валюта операции';
+comment on column ${cashFlowManager.schema}.TRANSACTIONS.currency is 'Валюта операции';
 comment on column ${cashFlowManager.schema}.TRANSACTIONS.operation_type is 'Тип операции';
 comment on column ${cashFlowManager.schema}.TRANSACTIONS.created_at is 'Дата проведения операции';
 comment on column ${cashFlowManager.schema}.TRANSACTIONS.transaction_description is 'Описание транзакции или комментарий';

@@ -3,6 +3,224 @@ info:
   title: Cash Flow Manager API
   version: 0.0.1
 paths:
+  /owner/{ownerId}/:
+    get:
+      summary: Получение данных пользователя
+      parameters:
+        - name: ownerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerPersonalDataInfoResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /owner/list/:
+    get:
+      summary: Получение списка всех пользователей
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnersListResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /transaction/list/{ownerId}/:
+    get:
+      summary: Получение всех операций пользователя
+      parameters:
+        - name: ownerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionByOwnerListResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /account/list/{ownerId}/:
+    get:
+      summary: Получение всех счетов пользователя
+      parameters:
+        - name: ownerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountByOwnerListResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /transaction/list/:
+    get:
+      summary: Получение списка всех операций
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionListResponse'
+        '400':
+          description: Некорректный запрос от клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Неавторизованный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Запрашиваемый ресурс не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /account/list/:
     get:
       summary: Получение списка всех счетов
@@ -233,7 +451,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /balance/update/{accountId}/:
+  /transaction/update/{accountId}/:
     post:
       summary: Изменение средств на счете
       parameters:
@@ -285,15 +503,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /owner/add/{accountId}/:
+  /owner/add/:
     post:
       summary: Добавление информации о владельце счета
-      parameters:
-        - name: accountId
-          in: path
-          required: true
-          schema:
-            type: integer
       requestBody:
         required: true
         content:
@@ -397,7 +609,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: Успешное удаление владельца счета
@@ -557,18 +769,19 @@ components:
           example: "2024-02-06T12:30:45Z"
       additionalProperties: false
     OwnerPersonalDataItem:
-      description: "Элемент, представляющий персональные данные владельца"
+      description: "Данные о пользователе"
       type: "object"
       required:
         - id
         - ownerSurname
         - ownerName
-        - createdAt
         - email
         - phoneNumber
         - address
         - dateOfBirth
         - gender
+        - status
+        - createdAt
       properties:
         id:
           description: "Идентификатор персональных данных владельца"
@@ -583,10 +796,6 @@ components:
         ownerPatronymic:
           description: "Отчество владельца"
           type: "string"
-        createdAt:
-          description: "Дата создания персональных данных"
-          type: "string"
-          format: "date-time"
         email:
           description: "Email владельца"
           type: "string"
@@ -603,24 +812,6 @@ components:
         gender:
           description: "Пол владельца"
           type: "string"
-      additionalProperties: false
-    AccountOwnerItem:
-      description: "Элемент данных о владельцах счетов"
-      type: "object"
-      required:
-        - id
-        - ownerPersonalDataId
-        - status
-        - createdAt
-        - ownershipPercentage
-      properties:
-        id:
-          description: "Идентификатор владельца счета"
-          type: "string"
-          format: uuid
-        ownerPersonalDataId:
-          description: "Идентификатор персональных данных владельца счета"
-          type: "integer"
         status:
           description: "Статус владельца счета"
           type: "string"
@@ -628,9 +819,6 @@ components:
           description: "Дата создания записи о владельце счета"
           type: "string"
           format: "date-time"
-        ownershipPercentage:
-          description: "Процент доли владения счетом"
-          type: "integer"
       additionalProperties: false
     AccountItem:
       description: "Элемент данных о счете"
@@ -674,10 +862,12 @@ components:
       required:
         - id
         - accountId
+        - accountNumber
         - amount
         - currency
         - operationType
         - createdAt
+        - transaction_description
       properties:
         id:
           description: "Идентификатор транзакции"
@@ -685,6 +875,9 @@ components:
           format: uuid
         accountId:
           description: "Идентификатор счета"
+          type: "integer"
+        accountNumber:
+          description: "Номер счета"
           type: "integer"
         amount:
           description: "Количество средств во время операции"
@@ -699,9 +892,6 @@ components:
           description: "Дата проведения операции"
           type: "string"
           format: "date-time"
-        transactionType:
-          description: "Тип транзакции"
-          type: "string"
         transactionDescription:
           description: "Описание транзакции или комментарий"
           type: "string"
@@ -718,6 +908,62 @@ components:
           items:
             $ref: '#/components/schemas/AccountItem'
       additionalProperties: false
+    OwnersListResponse:
+      description: "Ответ со списком всех пользователей"
+      type: "object"
+      required:
+        - ownersList
+      properties:
+        'accountsList':
+          description: "Список всех пользователей"
+          type: array
+          items:
+            $ref: '#/components/schemas/OwnerPersonalDataItem'
+      additionalProperties: false
+    TransactionByOwnerListResponse:
+      description: "Ответ со списком всех транзакций пользователя"
+      type: "object"
+      required:
+        - transactionыList
+      properties:
+        'accountsList':
+          description: "Список всех транзакций пользователя"
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionItem'
+      additionalProperties: false
+    TransactionListResponse:
+      description: "Ответ со списком всех транзакций пользователя"
+      type: "object"
+      required:
+        - transactionыList
+      properties:
+        'accountsList':
+          description: "Список всех транзакций пользователя"
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionItem'
+      additionalProperties: false
+    AccountByOwnerListResponse:
+      description: "Ответ со списком всех счетов пользователя"
+      type: "object"
+      required:
+        - accountsList
+      properties:
+        'accountsList':
+          description: "Список всех счетов пользователя"
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountItem'
+      additionalProperties: false
+    OwnerPersonalDataInfoResponse:
+      description: "Запрос на добавление счета"
+      required:
+        - owner
+      type: "object"
+      properties:
+        'account':
+          $ref: '#/components/schemas/OwnerPersonalDataItem'
     AddAccountRequest:
       description: "Запрос на добавление счета"
       required:
@@ -797,9 +1043,9 @@ components:
       description: "Ответ на добавление клиента"
       type: "object"
       required:
-        - transactionId
+        - ownerId
       properties:
-        transactionId:
+        ownerId:
           description: Идентификатор только что добавленного клиента
           type: "string"
     UpdateOwnerRequest:
@@ -822,10 +1068,11 @@ components:
       description: "Запрос на удаление владельца счета"
       type: "object"
       required:
-        - accountOwnerItem
+        - ownerId
       properties:
-        'accountOwnerItem':
-          $ref: '#/components/schemas/AccountOwnerItem'
+        ownerId:
+          description: Идентификатор только что добавленного клиента
+          type: "string"
     DeletedUsersListResponse:
       description: "Ответ со списком всех удаленных клиентов"
       type: "object"
