@@ -3,18 +3,19 @@ package ru.geekbrains.cashFlowManager.dto;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 public class AccountOwnerDTO {
-    private String id;
-    private int ownerPersonalDataId;
+    private UUID id;
+    private UUID ownerPersonalDataId;
     private String status;
     private Timestamp createdAt;
     private int ownershipPercentage;
 
     public AccountOwnerDTO() {}
 
-    public AccountOwnerDTO(String id, int ownerPersonalDataId, String status, Timestamp createdAt, int ownershipPercentage) {
+    public AccountOwnerDTO(UUID id, UUID ownerPersonalDataId, String status, Timestamp createdAt, int ownershipPercentage) {
         this.id = id;
         this.ownerPersonalDataId = ownerPersonalDataId;
         this.status = status;

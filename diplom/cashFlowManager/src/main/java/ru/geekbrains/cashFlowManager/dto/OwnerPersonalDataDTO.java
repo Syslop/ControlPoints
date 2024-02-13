@@ -3,11 +3,11 @@ package ru.geekbrains.cashFlowManager.dto;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class OwnerPersonalDataDTO {
-    private String id;
+    private UUID id;
     private String ownerSurname;
     private String ownerName;
     private String ownerPatronymic;
@@ -15,13 +15,13 @@ public class OwnerPersonalDataDTO {
     private String email;
     private String phoneNumber;
     private String address;
-    private Date dateOfBirth;
+    private Timestamp dateOfBirth;
     private String gender;
 
     public OwnerPersonalDataDTO() {}
 
-    public OwnerPersonalDataDTO(String id, String ownerSurname, String ownerName, String ownerPatronymic, Timestamp createdAt,
-                                String email, String phoneNumber, String address, Date dateOfBirth, String gender) {
+    public OwnerPersonalDataDTO(UUID id, String ownerSurname, String ownerName, String ownerPatronymic, Timestamp createdAt,
+                                String email, String phoneNumber, String address, Timestamp dateOfBirth, String gender) {
         this.id = id;
         this.ownerSurname = ownerSurname;
         this.ownerName = ownerName;

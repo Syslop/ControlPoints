@@ -2,7 +2,7 @@
 
 --changeset syslop:1
 CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.OWNER_PERSONAL_DATA (
-    id VARCHAR(64) PRIMARY KEY,
+    id uuid PRIMARY KEY,
     owner_surname VARCHAR(100) NOT NULL,
     owner_name VARCHAR(100) NOT NULL,
     owner_patronymic VARCHAR(100),
@@ -27,8 +27,8 @@ comment on column ${cashFlowManager.schema}.OWNER_PERSONAL_DATA.gender is 'По�
 
 --changeset syslop:2
 CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.ACCOUNT_OWNERS (
-    id VARCHAR(64) PRIMARY KEY,
-    owner_personal_data_id INTEGER,
+    id uuid PRIMARY KEY,
+    owner_personal_data_id uuid,
     status VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT ACCOUNT_OWNERS_pk primary key (id),
@@ -43,9 +43,9 @@ comment on column ${cashFlowManager.schema}.ACCOUNT_OWNERS.created_at is 'Дат
 
 --changeset syslop:3
 CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.ACCOUNTS (
-    id VARCHAR(64) PRIMARY KEY,
+    id uuid PRIMARY KEY,
     account_number VARCHAR(20) NOT NULL,
-    account_owner_id INTEGER,
+    account_owner_id uuid,
     balance INTEGER NOT NULL,
     currency VARCHAR(36) NOT NULL,
     status VARCHAR(100) NOT NULL,
@@ -65,8 +65,8 @@ comment on column ${cashFlowManager.schema}.ACCOUNTS.created_at is 'Дата с�
 
 --changeset syslop:4
 CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.TRANSACTIONS (
-    id VARCHAR(64) PRIMARY KEY,
-    account_id INTEGER REFERENCES ${cashFlowManager.schema}.ACCOUNTS(id) ON DELETE CASCADE,
+    id uuid PRIMARY KEY,
+    account_id uuid REFERENCES ${cashFlowManager.schema}.ACCOUNTS(id) ON DELETE CASCADE,
     amount INTEGER NOT NULL,
     currency VARCHAR(36) NOT NULL,
     operation_type VARCHAR(10) NOT NULL,

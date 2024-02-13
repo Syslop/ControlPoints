@@ -3,12 +3,13 @@ package ru.geekbrains.cashFlowManager.dto;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 public class AccountDTO {
-    private String id;
+    private UUID id;
     private String accountNumber;
-    private int accountOwnerId;
+    private UUID accountOwnerId;
     private int balance;
     private String currency;
     private String status;
@@ -16,7 +17,7 @@ public class AccountDTO {
 
     public AccountDTO() {}
 
-    public AccountDTO(String id, String accountNumber, int accountOwnerId, int balance, String currency, String status, Timestamp createdAt) {
+    public AccountDTO(UUID id, String accountNumber, UUID accountOwnerId, int balance, String currency, String status, Timestamp createdAt) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.accountOwnerId = accountOwnerId;
