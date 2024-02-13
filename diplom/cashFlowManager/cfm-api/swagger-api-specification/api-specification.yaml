@@ -896,7 +896,8 @@ components:
           type: "string"
         accountOwnerId:
           description: "Идентификатор владельца счета"
-          type: "integer"
+          type: "string"
+          format: uuid
         balance:
           description: "Баланс счета"
           type: "integer"
@@ -930,7 +931,8 @@ components:
           format: uuid
         accountId:
           description: "Идентификатор счета"
-          type: "integer"
+          type: "string"
+          format: uuid
         accountNumber:
           description: "Номер счета"
           type: "integer"
