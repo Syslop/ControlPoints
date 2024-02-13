@@ -2,10 +2,20 @@ openapi: 3.0.0
 info:
   title: Cash Flow Manager API
   version: 0.0.1
+tags:
+  - name: owner
+    description: Requests for working with owners
+  - name: account
+    description: Requests for working with accounts
+  - name: transaction
+    description: Requests for working with transactions
 paths:
   /owner/{ownerId}/:
     get:
+      tags:
+        - owner
       summary: Получение данных пользователя
+      operationId: getOwnerInfo
       parameters:
         - name: ownerId
           in: path
@@ -51,7 +61,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /owner/list/:
     get:
+      tags:
+        - owner
       summary: Получение списка всех пользователей
+      operationId: getOwnersList
       responses:
         '200':
           description: Успешный запрос
@@ -91,7 +104,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /transaction/list/{ownerId}/:
     get:
+      tags:
+        - transaction
       summary: Получение всех операций пользователя
+      operationId: getTransactionByOwnerList
       parameters:
         - name: ownerId
           in: path
@@ -137,7 +153,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /account/list/{ownerId}/:
     get:
+      tags:
+        - account
       summary: Получение всех счетов пользователя
+      operationId: getAccountByOwnerList
       parameters:
         - name: ownerId
           in: path
@@ -183,7 +202,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /transaction/list/:
     get:
+      tags:
+        - transaction
       summary: Получение списка всех операций
+      operationId: getTransactionList
       responses:
         '200':
           description: Успешный запрос
@@ -223,7 +245,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /account/list/:
     get:
+      tags:
+        - account
       summary: Получение списка всех счетов
+      operationId: getAccountsList
       responses:
         '200':
           description: Успешный запрос
@@ -263,7 +288,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /account/add/:
     post:
+      tags:
+        - account
       summary: Создание нового счета
+      operationId: addAccount
       requestBody:
         required: true
         content:
@@ -309,7 +337,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /account/{accountId}/:
     get:
+      tags:
+        - account
       summary: Получение информации о конкретном счете
+      operationId: getAccountInfo
       parameters:
         - name: accountId
           in: path
@@ -355,7 +386,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /account/update/{accountId}/:
     post:
+      tags:
+        - account
       summary: Обновление информации о счете
+      operationId: updateAccount
       parameters:
         - name: accountId
           in: path
@@ -407,7 +441,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /account/delete/{accountId}/:
     post:
+      tags:
+        - account
       summary: Удаление счета
+      operationId: deleteAccount
       parameters:
         - name: accountId
           in: path
@@ -453,7 +490,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /transaction/update/{accountId}/:
     post:
+      tags:
+        - transaction
       summary: Изменение средств на счете
+      operationId: changeBalance
       parameters:
         - name: accountId
           in: path
@@ -505,7 +545,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /owner/add/:
     post:
+      tags:
+        - owner
       summary: Добавление информации о владельце счета
+      operationId: addOwner
       requestBody:
         required: true
         content:
@@ -551,7 +594,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /owner/update/{accountId}/:
     post:
+      tags:
+        - owner
       summary: Изменение информации о владельце счета
+      operationId: updateOwner
       parameters:
         - name: accountId
           in: path
@@ -603,7 +649,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /owner/delete/{accountId}/:
     post:
+      tags:
+        - owner
       summary: Удаление владельца счета
+      operationId: deleteOwner
       parameters:
         - name: accountId
           in: path
@@ -649,7 +698,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /owner/deleted/list/:
     get:
+      tags:
+        - owner
       summary: Получение списка всех удаленных пользователей
+      operationId: getDeletedUsersList
       responses:
         '200':
           description: Успешный запрос
@@ -689,7 +741,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /account/deleted/list/:
     get:
+      tags:
+        - account
       summary: Получение списка всех удаленных счетов
+      operationId: getDeletedAccountsList
       responses:
         '200':
           description: Успешный запрос
