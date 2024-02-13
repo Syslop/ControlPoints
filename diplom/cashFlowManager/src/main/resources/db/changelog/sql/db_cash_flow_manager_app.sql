@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS ${cashFlowManager.schema}.OWNER_PERSONAL_DATA (
     email VARCHAR(100),
     phone_number VARCHAR(20),
     address VARCHAR(255),
-    date_of_birth DATE,
+    date_of_birth TIMESTAMP,
     gender VARCHAR(10),
     CONSTRAINT OWNER_PERSONAL_DATA_pk primary key (id)
     );

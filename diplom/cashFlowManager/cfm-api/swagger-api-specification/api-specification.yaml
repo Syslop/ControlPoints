@@ -862,8 +862,8 @@ components:
           type: "string"
         dateOfBirth:
           description: "Дата рождения владельца"
-          type: "string"
-          format: "date"
+          type: integer
+          format: int64
         gender:
           description: "Пол владельца"
           type: "string"
@@ -872,8 +872,8 @@ components:
           type: "string"
         createdAt:
           description: "Дата создания записи о владельце счета"
-          type: "string"
-          format: "date-time"
+          type: integer
+          format: int64
       additionalProperties: false
     AccountItem:
       description: "Элемент данных о счете"
@@ -908,8 +908,8 @@ components:
           type: "string"
         createdAt:
           description: "Дата создания счета"
-          type: "string"
-          format: "date-time"
+          type: integer
+          format: int64
       additionalProperties: false
     TransactionItem:
       description: "Элемент данных о транзакции"
@@ -945,8 +945,8 @@ components:
           type: "string"
         createdAt:
           description: "Дата проведения операции"
-          type: "string"
-          format: "date-time"
+          type: integer
+          format: int64
         transactionDescription:
           description: "Описание транзакции или комментарий"
           type: "string"
