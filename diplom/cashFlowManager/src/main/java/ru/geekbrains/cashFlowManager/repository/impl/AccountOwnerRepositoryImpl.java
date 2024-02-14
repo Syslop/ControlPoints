@@ -18,7 +18,7 @@ public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
     // language=sql
     private final static String INSERT_ACCOUNT_OWNER_SQL = "INSERT INTO ACCOUNT_OWNERS (id, owner_personal_data_id, status, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
     // language=sql
-    private final static String UPDATE_ACCOUNT_OWNER_SQL = "UPDATE ACCOUNT_OWNERS SET owner_personal_data_id = ?, status = ? WHERE id = ?";
+    private final static String UPDATE_ACCOUNT_OWNER_SQL = "UPDATE ACCOUNT_OWNERS SET status = ? WHERE id = ?";
     // language=sql
     private final static String FIND_ACCOUNT_OWNER_BY_ID_SQL = "SELECT id, owner_personal_data_id, status, created_at FROM ACCOUNT_OWNERS WHERE id = ?";
     // language=sql
@@ -47,9 +47,8 @@ public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
     public Boolean edit(AccountOwnerDTO newAccountOwnerDTO) {
         int rowsAffected = jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_OWNER_SQL);
-            ps.setString(1, newAccountOwnerDTO.getOwnerPersonalDataId());
-            ps.setString(2, newAccountOwnerDTO.getStatus());
-            ps.setString(3, newAccountOwnerDTO.getId());
+            ps.setString(1, newAccountOwnerDTO.getStatus());
+            ps.setString(2, newAccountOwnerDTO.getId());
             return ps;
         });
         return rowsAffected > 0;

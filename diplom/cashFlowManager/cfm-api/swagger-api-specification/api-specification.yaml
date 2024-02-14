@@ -592,14 +592,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /owner/update/{accountId}/:
+  /owner/update/{ownerId}/:
     post:
       tags:
         - owner
       summary: Изменение информации о владельце счета
       operationId: updateOwner
       parameters:
-        - name: accountId
+        - name: ownerId
           in: path
           required: true
           schema:
