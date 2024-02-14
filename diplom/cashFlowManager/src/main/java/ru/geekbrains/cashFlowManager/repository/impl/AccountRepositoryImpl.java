@@ -20,6 +20,15 @@ public class AccountRepositoryImpl implements AccountRepository {
     // language=sql
     private final static String INSERT_ACCOUNT_SQL = "insert into ACCOUNTS (id, account_number, account_owner_id, balance, currency, status, created_at) values (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP);";
 
+    // language=sql
+    private final static String UPDATE_ACCOUNT_SQL = "update ACCOUNTS set account_number = ?, account_owner_id = ?, balance = ?, currency = ?, status = ? where id = ?";
+
+    // language=sql
+    private final static String FIND_ACCOUNT_BY_ID_SQL = "select id, account_number, account_owner_id, balance, currency, status, created_at from ACCOUNTS where id = ?";
+
+    // language=sql
+    private final static String DELETE_ACCOUNT_SQL = "delete from ACCOUNTS where id = ?";
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -45,12 +54,24 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Boolean edit(AccountDTO newAccountDTO) {
-        return null;
+        int rowsAffected = jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_SQL);
+            ps.setString(1, newAccountDTO.getAccountNumber());
+            ps.setObject(2, newAccountDTO.getAccountOwnerId());
+            ps.setInt(3, newAccountDTO.getBalance());
+            ps.setString(4, newAccountDTO.getCurrency());
+            ps.setString(5, newAccountDTO.getStatus());
+            ps.setObject(6, newAccountDTO.getId());
+            return ps;
+        });
+        return rowsAffected > 0;
     }
 
     @Override
     public Optional<AccountDTO> get(String id) {
-        return Optional.empty();
+        return jdbcTemplate.queryForObject(FIND_ACCOUNT_BY_ID_SQL, new Object[]{id}, (rs, rowNum) ->
+                Optional.ofNullable(new AccountRowMapper().mapRow(rs, rowNum))
+        );
     }
 
     @Override
@@ -63,6 +84,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public UUID delete(String id) {
-        return null;
+        jdbcTemplate.update(DELETE_ACCOUNT_SQL, id);
+        return UUID.fromString(id);
     }
 }
