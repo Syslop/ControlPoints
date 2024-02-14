@@ -33,10 +33,10 @@ public class OwnerPersonalDataRepositoryImpl implements OwnerPersonalDataReposit
     }
 
     @Override
-    public UUID add(OwnerPersonalDataDTO ownerPersonalDataDTO) {
+    public String add(OwnerPersonalDataDTO ownerPersonalDataDTO) {
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(INSERT_OWNER_PERSONAL_DATA_SQL);
-            ps.setObject(1, ownerPersonalDataDTO.getId());
+            ps.setString(1, ownerPersonalDataDTO.getId());
             ps.setString(2, ownerPersonalDataDTO.getOwnerSurname());
             ps.setString(3, ownerPersonalDataDTO.getOwnerName());
             ps.setString(4, ownerPersonalDataDTO.getOwnerPatronymic());
@@ -62,7 +62,7 @@ public class OwnerPersonalDataRepositoryImpl implements OwnerPersonalDataReposit
             ps.setString(6, newOwnerPersonalDataDTO.getAddress());
             ps.setTimestamp(7, newOwnerPersonalDataDTO.getDateOfBirth());
             ps.setString(8, newOwnerPersonalDataDTO.getGender());
-            ps.setObject(9, newOwnerPersonalDataDTO.getId());
+            ps.setString(9, newOwnerPersonalDataDTO.getId());
             return ps;
         });
         return rowsAffected > 0;
@@ -81,8 +81,8 @@ public class OwnerPersonalDataRepositoryImpl implements OwnerPersonalDataReposit
     }
 
     @Override
-    public UUID delete(String id) {
+    public String delete(String id) {
         jdbcTemplate.update(DELETE_OWNER_PERSONAL_DATA_SQL, id);
-        return UUID.fromString(id);
+        return id;
     }
 }

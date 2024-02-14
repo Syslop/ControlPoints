@@ -43,7 +43,7 @@ public class AccountApiImpl implements AccountApi {
 
     //Удаление счета
     @Override
-    public ResponseEntity<DeleteAccountResponse> deleteAccount(Integer accountId) {
+    public ResponseEntity<DeleteAccountResponse> deleteAccount(String accountId) {
         return null;
     }
 
@@ -55,7 +55,7 @@ public class AccountApiImpl implements AccountApi {
 
     //Получение информации о конкретном счете
     @Override
-    public ResponseEntity<AccountInfoResponse> getAccountInfo(Integer accountId) {
+    public ResponseEntity<AccountInfoResponse> getAccountInfo(String accountId) {
         return null;
     }
 
@@ -86,7 +86,23 @@ public class AccountApiImpl implements AccountApi {
 
     //Обновление информации о счете
     @Override
-    public ResponseEntity<UpdateAccountResponse> updateAccount(Integer accountId, UpdateAccountRequest updateAccountRequest) {
-        return null;
+    public ResponseEntity<UpdateAccountResponse> updateAccount(String accountId, UpdateAccountRequest updateAccountRequest) {
+        AccountItem accountItem = updateAccountRequest.getAccount();
+
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setId(accountItem.getId());
+        accountDTO.setAccountNumber(accountItem.getAccountNumber());
+        accountDTO.setAccountOwnerId(accountItem.getAccountOwnerId());
+        accountDTO.setBalance(accountItem.getBalance());
+        accountDTO.setCurrency(accountItem.getCurrency());
+        accountDTO.setStatus(accountItem.getStatus());
+        accountDTO.setCreatedAt(Timestamp.from(Instant.ofEpochSecond(accountItem.getCreatedAt())));
+
+        repositoryBean.getAccountRepository().edit(accountDTO);
+
+        UpdateAccountResponse updateAccountResponse = new UpdateAccountResponse();
+        updateAccountResponse.setAccount(accountItem);
+
+        return ResponseEntity.ok(updateAccountResponse);
     }
 }

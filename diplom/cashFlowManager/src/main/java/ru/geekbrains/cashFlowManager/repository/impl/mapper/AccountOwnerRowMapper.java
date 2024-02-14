@@ -11,8 +11,8 @@ public class AccountOwnerRowMapper implements RowMapper<AccountOwnerDTO> {
     @Override
     public AccountOwnerDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
         AccountOwnerDTO accountOwnerDTO = new AccountOwnerDTO();
-        accountOwnerDTO.setId(UUID.fromString(rs.getString("id")));
-        accountOwnerDTO.setOwnerPersonalDataId(UUID.fromString(rs.getString("owner_personal_data_id")));
+        accountOwnerDTO.setId(rs.getString("id"));
+        accountOwnerDTO.setOwnerPersonalDataId(rs.getString("owner_personal_data_id"));
         accountOwnerDTO.setStatus(rs.getString("status"));
         accountOwnerDTO.setCreatedAt(rs.getTimestamp("created_at"));
         return accountOwnerDTO;

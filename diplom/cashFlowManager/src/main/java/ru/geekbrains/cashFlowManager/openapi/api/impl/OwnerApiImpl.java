@@ -39,7 +39,7 @@ public class OwnerApiImpl implements OwnerApi {
 
     //Изменение информации о владельце счета
     @Override
-    public ResponseEntity<UpdateOwnerResponse> updateOwner(Integer accountId, UpdateOwnerRequest updateOwnerRequest) {
+    public ResponseEntity<UpdateOwnerResponse> updateOwner(String accountId, UpdateOwnerRequest updateOwnerRequest) {
         return null;
     }
 }

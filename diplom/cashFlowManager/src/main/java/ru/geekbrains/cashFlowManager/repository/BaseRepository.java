@@ -10,7 +10,7 @@ import java.util.UUID;
  * @param <T> элемент репозитория.
  */
 public interface BaseRepository<T, I> {
-    UUID add(T item);
+    String add(T item);
 
     Boolean edit(T newItem);
 
@@ -18,5 +18,5 @@ public interface BaseRepository<T, I> {
 
     List<T> findAll();
 
-    UUID delete(I id);
+    String delete(I id);
 }

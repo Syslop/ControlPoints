@@ -37,13 +37,13 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public UUID add(AccountDTO accountDTO) {
+    public String add(AccountDTO accountDTO) {
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con
                     .prepareStatement(INSERT_ACCOUNT_SQL);
-            ps.setObject(1, accountDTO.getId());
+            ps.setString(1, accountDTO.getId());
             ps.setString(2, accountDTO.getAccountNumber());
-            ps.setObject(3, accountDTO.getAccountOwnerId());
+            ps.setString(3, accountDTO.getAccountOwnerId());
             ps.setInt(4, accountDTO.getBalance());
             ps.setString(5, accountDTO.getCurrency());
             ps.setString(6, accountDTO.getStatus());
@@ -61,7 +61,7 @@ public class AccountRepositoryImpl implements AccountRepository {
             ps.setInt(3, newAccountDTO.getBalance());
             ps.setString(4, newAccountDTO.getCurrency());
             ps.setString(5, newAccountDTO.getStatus());
-            ps.setObject(6, newAccountDTO.getId());
+            ps.setString(6, newAccountDTO.getId());
             return ps;
         });
         return rowsAffected > 0;
@@ -69,9 +69,11 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Optional<AccountDTO> get(String id) {
-        return jdbcTemplate.queryForObject(FIND_ACCOUNT_BY_ID_SQL, new Object[]{id}, (rs, rowNum) ->
-                Optional.ofNullable(new AccountRowMapper().mapRow(rs, rowNum))
-        );
+         return Optional.ofNullable(jdbcTemplate.queryForObject(
+                 FIND_ACCOUNT_BY_ID_SQL,
+                 new AccountRowMapper(),
+                 id
+         ));
     }
 
     @Override
@@ -83,8 +85,13 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public UUID delete(String id) {
-        jdbcTemplate.update(DELETE_ACCOUNT_SQL, id);
-        return UUID.fromString(id);
+    public String delete(String id) {
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con
+                    .prepareStatement(DELETE_ACCOUNT_SQL);
+            ps.setString(1, id);
+            return ps;
+        });
+        return id;
     }
 }

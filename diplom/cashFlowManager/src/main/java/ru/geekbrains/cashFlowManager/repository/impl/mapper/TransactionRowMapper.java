@@ -11,8 +11,8 @@ public class TransactionRowMapper implements RowMapper<TransactionDTO> {
     @Override
     public TransactionDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
         TransactionDTO transactionDTO = new TransactionDTO();
-        transactionDTO.setId(UUID.fromString(rs.getString("id")));
-        transactionDTO.setAccountId(UUID.fromString(rs.getString("account_id")));
+        transactionDTO.setId(rs.getString("id"));
+        transactionDTO.setAccountId(rs.getString("account_id"));
         transactionDTO.setAmount(rs.getInt("amount"));
         transactionDTO.setCurrency(rs.getString("currency"));
         transactionDTO.setOperationType(rs.getString("operation_type"));

@@ -12,7 +12,7 @@ import ru.geekbrains.cashFlowManager.openapi.api.TransactionApi;
 public class TransactionApiImpl implements TransactionApi {
     //Изменение средств на счете
     @Override
-    public ResponseEntity<ChangeBalanceResponse> changeBalance(Integer accountId, ChangeBalanceRequest changeBalanceRequest) {
+    public ResponseEntity<ChangeBalanceResponse> changeBalance(String accountId, ChangeBalanceRequest changeBalanceRequest) {
         return null;
     }
 

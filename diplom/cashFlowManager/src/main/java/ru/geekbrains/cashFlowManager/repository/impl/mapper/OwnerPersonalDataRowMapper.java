@@ -11,7 +11,7 @@ public class OwnerPersonalDataRowMapper implements RowMapper<OwnerPersonalDataDT
     @Override
     public OwnerPersonalDataDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
         OwnerPersonalDataDTO ownerPersonalDataDTO = new OwnerPersonalDataDTO();
-        ownerPersonalDataDTO.setId(UUID.fromString(rs.getString("id")));
+        ownerPersonalDataDTO.setId(rs.getString("id"));
         ownerPersonalDataDTO.setOwnerSurname(rs.getString("owner_surname"));
         ownerPersonalDataDTO.setOwnerName(rs.getString("owner_name"));
         ownerPersonalDataDTO.setOwnerPatronymic(rs.getString("owner_patronymic"));

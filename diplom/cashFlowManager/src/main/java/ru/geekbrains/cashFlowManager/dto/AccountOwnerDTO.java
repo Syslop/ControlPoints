@@ -7,15 +7,15 @@ import java.util.UUID;
 
 @Data
 public class AccountOwnerDTO {
-    private UUID id;
-    private UUID ownerPersonalDataId;
+    private String id;
+    private String ownerPersonalDataId;
     private String status;
     private Timestamp createdAt;
     private int ownershipPercentage;
 
     public AccountOwnerDTO() {}
 
-    public AccountOwnerDTO(UUID id, UUID ownerPersonalDataId, String status, Timestamp createdAt, int ownershipPercentage) {
+    public AccountOwnerDTO(String id, String ownerPersonalDataId, String status, Timestamp createdAt, int ownershipPercentage) {
         this.id = id;
         this.ownerPersonalDataId = ownerPersonalDataId;
         this.status = status;

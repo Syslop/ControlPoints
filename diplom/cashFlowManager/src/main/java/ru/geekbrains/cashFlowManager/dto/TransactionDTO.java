@@ -7,8 +7,8 @@ import java.util.UUID;
 
 @Data
 public class TransactionDTO {
-    private UUID id;
-    private UUID accountId;
+    private String id;
+    private String accountId;
     private int amount;
     private String currency;
     private String operationType;
@@ -18,7 +18,7 @@ public class TransactionDTO {
     // Constructors
     public TransactionDTO() {}
 
-    public TransactionDTO(UUID id, UUID accountId, int amount, String currency, String operationType,
+    public TransactionDTO(String id, String accountId, int amount, String currency, String operationType,
                            Timestamp createdAt, String transactionDescription) {
         this.id = id;
         this.accountId = accountId;

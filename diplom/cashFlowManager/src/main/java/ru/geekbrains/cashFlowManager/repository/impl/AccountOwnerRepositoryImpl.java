@@ -33,11 +33,11 @@ public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
     }
 
     @Override
-    public UUID add(AccountOwnerDTO accountOwnerDTO) {
+    public String add(AccountOwnerDTO accountOwnerDTO) {
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(INSERT_ACCOUNT_OWNER_SQL);
-            ps.setObject(1, accountOwnerDTO.getId());
-            ps.setObject(2, accountOwnerDTO.getOwnerPersonalDataId());
+            ps.setString(1, accountOwnerDTO.getId());
+            ps.setString(2, accountOwnerDTO.getOwnerPersonalDataId());
             ps.setString(3, accountOwnerDTO.getStatus());
             return ps;
         });
@@ -48,9 +48,9 @@ public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
     public Boolean edit(AccountOwnerDTO newAccountOwnerDTO) {
         int rowsAffected = jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(UPDATE_ACCOUNT_OWNER_SQL);
-            ps.setObject(1, newAccountOwnerDTO.getOwnerPersonalDataId());
+            ps.setString(1, newAccountOwnerDTO.getOwnerPersonalDataId());
             ps.setString(2, newAccountOwnerDTO.getStatus());
-            ps.setObject(3, newAccountOwnerDTO.getId());
+            ps.setString(3, newAccountOwnerDTO.getId());
             return ps;
         });
         return rowsAffected > 0;
@@ -69,8 +69,8 @@ public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
     }
 
     @Override
-    public UUID delete(String id) {
+    public String delete(String id) {
         jdbcTemplate.update(DELETE_ACCOUNT_OWNER_SQL, id);
-        return UUID.fromString(id);
+        return id;
     }
 }

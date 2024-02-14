@@ -33,11 +33,11 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public UUID add(TransactionDTO transactionDTO) {
+    public String add(TransactionDTO transactionDTO) {
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(INSERT_TRANSACTION_SQL);
-            ps.setObject(1, transactionDTO.getId());
-            ps.setObject(2, transactionDTO.getAccountId());
+            ps.setString(1, transactionDTO.getId());
+            ps.setString(2, transactionDTO.getAccountId());
             ps.setInt(3, transactionDTO.getAmount());
             ps.setString(4, transactionDTO.getCurrency());
             ps.setString(5, transactionDTO.getOperationType());
@@ -51,13 +51,13 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     public Boolean edit(TransactionDTO newTransactionDTO) {
         int rowsAffected = jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(UPDATE_TRANSACTION_SQL);
-            ps.setObject(1, newTransactionDTO.getAccountId());
+            ps.setString(1, newTransactionDTO.getAccountId());
             ps.setInt(2, newTransactionDTO.getAmount());
             ps.setString(3, newTransactionDTO.getCurrency());
             ps.setString(4, newTransactionDTO.getOperationType());
             ps.setTimestamp(5, newTransactionDTO.getCreatedAt());
             ps.setString(6, newTransactionDTO.getTransactionDescription());
-            ps.setObject(7, newTransactionDTO.getId());
+            ps.setString(7, newTransactionDTO.getId());
             return ps;
         });
         return rowsAffected > 0;
@@ -76,8 +76,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public UUID delete(String id) {
+    public String delete(String id) {
         jdbcTemplate.update(DELETE_TRANSACTION_SQL, id);
-        return UUID.fromString(id);
+        return id;
     }
 }

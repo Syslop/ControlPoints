@@ -346,7 +346,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: Успешный запрос
@@ -395,7 +395,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         required: true
         content:
@@ -450,7 +450,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: Успешное удаление счета
@@ -499,7 +499,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         required: true
         content:
@@ -603,7 +603,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         required: true
         content:
@@ -841,7 +841,6 @@ components:
         id:
           description: "Идентификатор персональных данных владельца"
           type: "string"
-          format: uuid
         ownerSurname:
           description: "Фамилия владельца"
           type: "string"
@@ -890,14 +889,12 @@ components:
         id:
           description: "Идентификатор счета"
           type: "string"
-          format: uuid
         accountNumber:
           description: "Номер счета"
           type: "string"
         accountOwnerId:
           description: "Идентификатор владельца счета"
           type: "string"
-          format: uuid
         balance:
           description: "Баланс счета"
           type: "integer"
@@ -928,11 +925,9 @@ components:
         id:
           description: "Идентификатор транзакции"
           type: "string"
-          format: uuid
         accountId:
           description: "Идентификатор счета"
           type: "string"
-          format: uuid
         accountNumber:
           description: "Номер счета"
           type: "integer"
