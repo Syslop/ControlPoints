@@ -10,7 +10,6 @@ import ru.geekbrains.cashFlowManager.repository.impl.mapper.AccountOwnerRowMappe
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
@@ -58,9 +57,11 @@ public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
 
     @Override
     public Optional<AccountOwnerDTO> get(String id) {
-        return jdbcTemplate.queryForObject(FIND_ACCOUNT_OWNER_BY_ID_SQL, new Object[]{id}, (rs, rowNum) ->
-                Optional.ofNullable(new AccountOwnerRowMapper().mapRow(rs, rowNum))
-        );
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+                FIND_ACCOUNT_OWNER_BY_ID_SQL,
+                new AccountOwnerRowMapper(),
+                id
+        ));
     }
 
     @Override
@@ -70,7 +71,12 @@ public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
 
     @Override
     public String delete(String id) {
-        jdbcTemplate.update(DELETE_ACCOUNT_OWNER_SQL, id);
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con
+                    .prepareStatement(DELETE_ACCOUNT_OWNER_SQL);
+            ps.setString(1, id);
+            return ps;
+        });
         return id;
     }
 }

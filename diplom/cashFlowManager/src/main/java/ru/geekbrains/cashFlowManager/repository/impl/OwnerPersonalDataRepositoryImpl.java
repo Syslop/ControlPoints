@@ -10,7 +10,6 @@ import ru.geekbrains.cashFlowManager.repository.impl.mapper.OwnerPersonalDataRow
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class OwnerPersonalDataRepositoryImpl implements OwnerPersonalDataRepository {
@@ -70,19 +69,28 @@ public class OwnerPersonalDataRepositoryImpl implements OwnerPersonalDataReposit
 
     @Override
     public Optional<OwnerPersonalDataDTO> get(String id) {
-        return jdbcTemplate.queryForObject(FIND_OWNER_PERSONAL_DATA_BY_ID_SQL, new Object[]{id}, (rs, rowNum) ->
-                Optional.ofNullable(new OwnerPersonalDataRowMapper().mapRow(rs, rowNum))
-        );
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+                FIND_OWNER_PERSONAL_DATA_BY_ID_SQL,
+                new OwnerPersonalDataRowMapper(),
+                id
+        ));
     }
 
     @Override
     public List<OwnerPersonalDataDTO> findAll() {
-        return jdbcTemplate.query(FIND_ALL_OWNER_PERSONAL_DATA_SQL, new OwnerPersonalDataRowMapper());
+        return jdbcTemplate.query(
+                FIND_ALL_OWNER_PERSONAL_DATA_SQL,
+                new OwnerPersonalDataRowMapper());
     }
 
     @Override
     public String delete(String id) {
-        jdbcTemplate.update(DELETE_OWNER_PERSONAL_DATA_SQL, id);
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con
+                    .prepareStatement(DELETE_OWNER_PERSONAL_DATA_SQL);
+            ps.setString(1, id);
+            return ps;
+        });
         return id;
     }
 }

@@ -10,7 +10,6 @@ import ru.geekbrains.cashFlowManager.repository.impl.mapper.TransactionRowMapper
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository {
@@ -65,19 +64,28 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
     @Override
     public Optional<TransactionDTO> get(String id) {
-        return jdbcTemplate.queryForObject(FIND_TRANSACTION_BY_ID_SQL, new Object[]{id}, (rs, rowNum) ->
-                Optional.ofNullable(new TransactionRowMapper().mapRow(rs, rowNum))
-        );
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+                FIND_TRANSACTION_BY_ID_SQL,
+                new TransactionRowMapper(),
+                id
+        ));
     }
 
     @Override
     public List<TransactionDTO> findAll() {
-        return jdbcTemplate.query(FIND_ALL_TRANSACTIONS_SQL, new TransactionRowMapper());
+        return jdbcTemplate.query(
+                FIND_ALL_TRANSACTIONS_SQL,
+                new TransactionRowMapper());
     }
 
     @Override
     public String delete(String id) {
-        jdbcTemplate.update(DELETE_TRANSACTION_SQL, id);
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con
+                    .prepareStatement(DELETE_TRANSACTION_SQL);
+            ps.setString(1, id);
+            return ps;
+        });
         return id;
     }
 }

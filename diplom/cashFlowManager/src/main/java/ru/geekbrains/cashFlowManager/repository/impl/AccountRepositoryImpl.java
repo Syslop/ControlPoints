@@ -10,7 +10,6 @@ import ru.geekbrains.cashFlowManager.repository.impl.mapper.AccountRowMapper;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
