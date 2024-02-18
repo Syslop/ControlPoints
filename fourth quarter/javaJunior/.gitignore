@@ -35,3 +35,4 @@ build/
 ### directory
 logs/
 db/
+*.class
