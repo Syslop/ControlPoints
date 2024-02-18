@@ -1,6 +1,7 @@
 package ru.geekbrains.cashFlowManager.openapi.api.impl;
 
 import org.openapitools.model.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,19 +45,41 @@ public class AccountApiImpl implements AccountApi {
     //Удаление счета
     @Override
     public ResponseEntity<DeleteAccountResponse> deleteAccount(String accountId) {
-        return null;
+        DeleteAccountResponse deleteAccountResponse = new DeleteAccountResponse();
+        deleteAccountResponse.setAccountId(repositoryBean.getAccountRepository().delete(accountId));
+        return ResponseEntity.ok(deleteAccountResponse);
     }
 
     //Получение всех счетов пользователя
     @Override
     public ResponseEntity<AccountByOwnerListResponse> getAccountByOwnerList(String ownerId) {
-        return null;
+        AccountByOwnerListResponse accountByOwnerIdListResponse = new AccountByOwnerListResponse();
+        List<AccountItem> accountItemByOwnerIdList = repositoryBean.getAccountRepository().findByOwnerId(ownerId).stream()
+                .map(accountDTO -> {
+            AccountItem accountItem = new AccountItem();
+            accountItem.setId(accountDTO.getId());
+            accountItem.setAccountNumber(accountDTO.getAccountNumber());
+            accountItem.setAccountOwnerId(accountDTO.getAccountOwnerId());
+            accountItem.setBalance(accountDTO.getBalance());
+            accountItem.setCurrency(accountDTO.getCurrency());
+            accountItem.setStatus(accountDTO.getStatus());
+            accountItem.setCreatedAt(accountDTO.getCreatedAt().getTime());
+            return accountItem;
+        }).collect(Collectors.toList());
+        accountByOwnerIdListResponse.setAccountsList(accountItemByOwnerIdList);
+        return ResponseEntity.ok(accountByOwnerIdListResponse);
     }
 
     //Получение информации о конкретном счете
     @Override
     public ResponseEntity<AccountInfoResponse> getAccountInfo(String accountId) {
-        return null;
+        AccountDTO accountDTO = repositoryBean.getAccountRepository().get(accountId).orElseThrow();
+        AccountItem accountItem = new AccountItem();
+        BeanUtils.copyProperties(accountDTO, accountItem); // Копирование свойств
+
+        AccountInfoResponse accountInfoResponse = new AccountInfoResponse();
+        accountInfoResponse.setAccount(accountItem);
+        return ResponseEntity.ok(accountInfoResponse);
     }
 
     //Получение списка всех счетов
@@ -81,7 +104,20 @@ public class AccountApiImpl implements AccountApi {
     //Получение списка всех удаленных счетов
     @Override
     public ResponseEntity<DeletedAccountsListResponse> getDeletedAccountsList() {
-        return null;
+        DeletedAccountsListResponse deletedAccountsListResponse = new DeletedAccountsListResponse();
+        List<AccountItem> deletedAccountItemList = repositoryBean.getAccountRepository().findDeletedAccountList().stream().map(accountDTO -> {
+            AccountItem accountItem = new AccountItem();
+            accountItem.setId(accountDTO.getId());
+            accountItem.setAccountNumber(accountDTO.getAccountNumber());
+            accountItem.setAccountOwnerId(accountDTO.getAccountOwnerId());
+            accountItem.setBalance(accountDTO.getBalance());
+            accountItem.setCurrency(accountDTO.getCurrency());
+            accountItem.setStatus(accountDTO.getStatus());
+            accountItem.setCreatedAt(accountDTO.getCreatedAt().getTime());
+            return accountItem;
+        }).collect(Collectors.toList());
+        deletedAccountsListResponse.setDeletedAccountsList(deletedAccountItemList);
+        return ResponseEntity.ok(deletedAccountsListResponse);
     }
 
     //Обновление информации о счете

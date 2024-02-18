@@ -647,14 +647,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /owner/delete/{accountId}/:
+  /owner/delete/{ownerId}/:
     post:
       tags:
         - owner
       summary: Удаление владельца счета
       operationId: deleteOwner
       parameters:
-        - name: accountId
+        - name: ownerId
           in: path
           required: true
           schema:
@@ -708,7 +708,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeletedUsersListResponse'
+                $ref: '#/components/schemas/DeletedOwnersListResponse'
         '400':
           description: Некорректный запрос от клиента
           content:
@@ -1125,7 +1125,7 @@ components:
         ownerId:
           description: Идентификатор только что добавленного клиента
           type: "string"
-    DeletedUsersListResponse:
+    DeletedOwnersListResponse:
       description: "Ответ со списком всех удаленных клиентов"
       type: "object"
       required:

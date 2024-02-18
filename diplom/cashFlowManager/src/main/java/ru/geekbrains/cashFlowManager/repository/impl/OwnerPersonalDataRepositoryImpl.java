@@ -14,13 +14,13 @@ import java.util.Optional;
 @Repository
 public class OwnerPersonalDataRepositoryImpl implements OwnerPersonalDataRepository {
     // language=sql
-    private final static String FIND_ALL_OWNER_PERSONAL_DATA_SQL = "SELECT id, owner_surname, owner_name, owner_patronymic, email, phone_number, address, date_of_birth, gender FROM OWNER_PERSONAL_DATA";
+    private final static String FIND_ALL_OWNER_PERSONAL_DATA_SQL = "SELECT OPD.id, OPD.owner_surname, OPD.owner_name, OPD.owner_patronymic, OPD.email, OPD.phone_number, OPD.address, OPD.date_of_birth, OPD.gender, AO.status, AO.created_at FROM OWNER_PERSONAL_DATA OPD LEFT JOIN ACCOUNT_OWNERS AO ON AO.owner_personal_data_id = OPD.id WHERE status != 'DELETED';";
     // language=sql
     private final static String INSERT_OWNER_PERSONAL_DATA_SQL = "INSERT INTO OWNER_PERSONAL_DATA (id, owner_surname, owner_name, owner_patronymic, email, phone_number, address, date_of_birth, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     // language=sql
     private final static String UPDATE_OWNER_PERSONAL_DATA_SQL = "UPDATE OWNER_PERSONAL_DATA SET owner_surname = ?, owner_name = ?, owner_patronymic = ?, email = ?, phone_number = ?, address = ?, date_of_birth = ?, gender = ? WHERE id = ?";
     // language=sql
-    private final static String FIND_OWNER_PERSONAL_DATA_BY_ID_SQL = "SELECT id, owner_surname, owner_name, owner_patronymic, email, phone_number, address, date_of_birth, gender FROM OWNER_PERSONAL_DATA WHERE id = ?";
+    private final static String FIND_OWNER_PERSONAL_DATA_BY_ID_SQL = "SELECT OPD.id, OPD.owner_surname, OPD.owner_name, OPD.owner_patronymic, OPD.email, OPD.phone_number, OPD.address, OPD.date_of_birth, OPD.gender, AO.status, AO.created_at FROM OWNER_PERSONAL_DATA OPD LEFT JOIN ACCOUNT_OWNERS AO ON AO.owner_personal_data_id = OPD.id WHERE OPD.id = ? AND AO.status != 'DELETED'";
     // language=sql
     private final static String DELETE_OWNER_PERSONAL_DATA_SQL = "DELETE FROM OWNER_PERSONAL_DATA WHERE id = ?";
 

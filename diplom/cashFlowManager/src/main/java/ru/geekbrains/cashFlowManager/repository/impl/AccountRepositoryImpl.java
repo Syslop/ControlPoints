@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
     // language=sql
-    private final static String FIND_ALL_ACCOUNTS_SQL = "select id, account_number, account_owner_id, balance, currency, status, created_at from ACCOUNTS order by created_at desc;";
+    private final static String FIND_ALL_ACCOUNTS_SQL = "select id, account_number, account_owner_id, balance, currency, status, created_at from ACCOUNTS WHERE status != 'DELETED' order by created_at desc;";
 
     // language=sql
     private final static String INSERT_ACCOUNT_SQL = "insert into ACCOUNTS (id, account_number, account_owner_id, balance, currency, status, created_at) values (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP);";
@@ -23,10 +23,19 @@ public class AccountRepositoryImpl implements AccountRepository {
     private final static String UPDATE_ACCOUNT_SQL = "update ACCOUNTS set account_number = ?, account_owner_id = ?, balance = ?, currency = ?, status = ? where id = ?";
 
     // language=sql
-    private final static String FIND_ACCOUNT_BY_ID_SQL = "select id, account_number, account_owner_id, balance, currency, status, created_at from ACCOUNTS where id = ?";
+    private final static String FIND_ACCOUNT_BY_ID_SQL = "select id, account_number, account_owner_id, balance, currency, status, created_at from ACCOUNTS where id = ? AND status != 'DELETED'";
 
     // language=sql
-    private final static String DELETE_ACCOUNT_SQL = "delete from ACCOUNTS where id = ?";
+    private final static String DELETE_ACCOUNT_SQL = "update ACCOUNTS set status = ? where id = ?";
+
+    // language=sql
+    private final static String FIND_ALL_ACCOUNT_BY_OWNER_ID_SQL = "select id, account_number, account_owner_id, balance, currency, status, created_at from ACCOUNTS where account_owner_id = ? AND status != 'DELETED' order by created_at desc;";
+
+    // language=sql
+    private final static String FIND_ALL_DELETED_ACCOUNT_LIST_SQL = "select id, account_number, account_owner_id, balance, currency, status, created_at from ACCOUNTS where status = ? order by created_at desc;";
+
+    // language=sql
+    private final static String FIND_ALL_DELETED_ACCOUNT_BY_OWNER_ID_SQL = "select id, account_number, account_owner_id, balance, currency, status, created_at from ACCOUNTS where status = ? and account_owner_id = ? order by created_at desc;";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -88,9 +97,38 @@ public class AccountRepositoryImpl implements AccountRepository {
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con
                     .prepareStatement(DELETE_ACCOUNT_SQL);
-            ps.setString(1, id);
+            ps.setString(1, "DELETED");
+            ps.setString(2, id);
             return ps;
         });
         return id;
+    }
+
+    @Override
+    public List<AccountDTO> findByOwnerId(String ownerId) {
+        return jdbcTemplate.query(
+                FIND_ALL_ACCOUNT_BY_OWNER_ID_SQL,
+                new AccountRowMapper(),
+                ownerId
+        );
+    }
+
+    @Override
+    public List<AccountDTO> findDeletedAccountList() {
+        return jdbcTemplate.query(
+                FIND_ALL_DELETED_ACCOUNT_LIST_SQL,
+                new AccountRowMapper(),
+                "DELETED"
+        );
+    }
+
+    @Override
+    public List<AccountDTO> findDeletedAccountsByOwnerId(String ownerId) {
+        return jdbcTemplate.query(
+                FIND_ALL_DELETED_ACCOUNT_BY_OWNER_ID_SQL,
+                new AccountRowMapper(),
+                "DELETED",
+                ownerId
+        );
     }
 }

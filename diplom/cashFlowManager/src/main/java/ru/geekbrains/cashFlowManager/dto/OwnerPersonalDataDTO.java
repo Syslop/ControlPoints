@@ -16,11 +16,13 @@ public class OwnerPersonalDataDTO {
     private String address;
     private Timestamp dateOfBirth;
     private String gender;
+    private String status;
+    private Timestamp created;
+
 
     public OwnerPersonalDataDTO() {}
 
-    public OwnerPersonalDataDTO(String id, String ownerSurname, String ownerName, String ownerPatronymic,
-                                String email, String phoneNumber, String address, Timestamp dateOfBirth, String gender) {
+    public OwnerPersonalDataDTO(String id, String ownerSurname, String ownerName, String ownerPatronymic, String email, String phoneNumber, String address, Timestamp dateOfBirth, String gender, String status, Timestamp created) {
         this.id = id;
         this.ownerSurname = ownerSurname;
         this.ownerName = ownerName;
@@ -30,6 +32,8 @@ public class OwnerPersonalDataDTO {
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+        this.status = status;
+        this.created = created;
     }
 
     @Override
@@ -44,6 +48,8 @@ public class OwnerPersonalDataDTO {
                 ", address='" + address + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", gender='" + gender + '\'' +
+                ", status='" + status + '\'' +
+                ", created=" + created +
                 '}';
     }
 }
