@@ -24,6 +24,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     // language=sql
     private final static String DELETE_TRANSACTION_SQL = "DELETE FROM TRANSACTIONS WHERE id = ?";
 
+    // language=sql
+    private final static String FIND_ALL_TRANSACTIONS_BY_OWNER_ID_SQL = "SELECT t.id, t.account_id, t.amount, t.currency, t.operation_type, t.created_at, t.transaction_description " +
+            "FROM TRANSACTIONS t " +
+            "LEFT JOIN ACCOUNTS a ON t.account_id = a.id " +
+            "LEFT JOIN ACCOUNT_OWNERS ao ON a.account_owner_id = ao.id " +
+            "WHERE ao.id = ?";
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -87,5 +93,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             return ps;
         });
         return id;
+    }
+
+    @Override
+    public List<TransactionDTO> findByOwnerId(String ownerId) {
+        return jdbcTemplate.query(
+                FIND_ALL_TRANSACTIONS_BY_OWNER_ID_SQL,
+                new TransactionRowMapper(),
+                ownerId
+        );
     }
 }

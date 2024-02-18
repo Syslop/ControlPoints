@@ -915,7 +915,6 @@ components:
       required:
         - id
         - accountId
-        - accountNumber
         - amount
         - currency
         - operationType
