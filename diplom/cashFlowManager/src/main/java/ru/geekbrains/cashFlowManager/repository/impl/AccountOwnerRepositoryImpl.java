@@ -55,8 +55,6 @@ public class AccountOwnerRepositoryImpl implements AccountOwnerRepository {
             ps.setString(2, newAccountOwnerDTO.getId());
             return ps;
         });
-        System.out.println(newAccountOwnerDTO.getStatus());
-        System.out.println(rowsAffected);
         return rowsAffected > 0;
     }
 
